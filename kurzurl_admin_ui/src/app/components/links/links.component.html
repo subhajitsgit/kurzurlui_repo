@@ -1,0 +1,96 @@
+<!-- <form [formGroup]="linkForm" class="p-3" (ngSubmit)="onSave()">
+  <div class="mb-3">
+    <label for="main-url" class="form-label">Main URL</label>
+    <input
+      type="text"
+      id="main-url"
+      class="form-control"
+      placeholder="Add the URL"
+      formControlName="mainUrl"
+    />
+    @if (linkForm.get('mainUrl')?.touched && linkForm.get('mainUrl')?.invalid) {
+      <div class="text-danger">
+        Main URL is missing
+      </div>
+    }
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="domain" class="form-label">Domain</label>
+      <select id="domain" class="form-select" formControlName="domain">
+        <option value="">Select a domain</option>
+        <option value="1">kurzurl.de</option>
+      </select>
+      @if(linkForm.get('domain')?.touched && linkForm.get('domain')?.invalid) {
+        <div class="text-danger">
+          Domain is missing
+        </div>
+      }
+    </div>
+    <div class="col-md-6">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        id="title"
+        class="form-control"
+        placeholder="Title"
+        formControlName="title"
+      />
+      @if (linkForm.get('title')?.touched && linkForm.get('title')?.invalid) {
+        <div class="text-danger">
+          Title is missing
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end gap-2">
+    <button type="button" class="btn btn-secondary" (click)="onClear()">Clear</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form> -->
+
+@for (link of userLinks; track link.id) {
+<div class="link-card">
+  <div class="card-left">
+    <img class="image" src="assets\images\logo\logo-youtube.png" alt="QR Code">
+  </div>
+
+  <!-- <div class="card-center">
+    <h3 class="title">Youtube</h3>
+    <p class="type">Website</p>
+    <a class="long-link" href="https://www.youtube.com/" target="_blank">
+      https://www.youtube.com/ </a>
+
+    <div class="meta">
+      <span>📊 Scan data</span>
+      <span>📅 Jul 7, 2025</span>
+      <span>🔗 bit.ly/4ksv8EF</span>https://www.youtube.com/
+    </div>
+  </div> -->
+
+
+  <div class="card-center">
+    <h3 class="title">{{link.shortUrl}}</h3>
+    <p class="type">Website</p>
+    <a class="long-link" [href]="link.mainUrl" target="_blank">
+      {{ link.title }} </a>
+
+    <div class="meta">
+      <span>📊 Scan data</span>
+      <span>📅 {{link.createdOn | date:'dd-MM-yyyy'}}</span>
+      <span>🔗 {{link.shortUrl}}</span>{{link.mainUrl}}
+    </div>
+  </div>
+
+
+  <div class="card-right">
+    <button class="icon-btn"><app-feather-icons [icons]="'more-vertical'"></app-feather-icons></button>
+    <button class="icon-btn"><app-feather-icons [icons]="'palette'"></app-feather-icons></button>
+    <button class="icon-btn"><app-feather-icons [icons]="'edit'"></app-feather-icons></button>
+    <button class="icon-btn"><app-feather-icons [icons]="'download'"></app-feather-icons></button>
+    <button class="view-btn">📈 View details</button>
+  </div>
+</div>
+}

@@ -1,0 +1,29 @@
+<div class="product-upload  custom-dropzone-project custom-dropzone-1">
+  <p>Product Image </p>
+  <form class="dropzone dropzone-light bg-light-primary">
+    <dropzone class="no-preview" [message]="image" [config]="imageConfig" (error)="onUploadError($event)"
+    (success)="onUploadSuccess($event)" [className]="'custom-drop-zone'">
+  </dropzone>
+  </form>
+</div>
+<div class="product-upload custom-dropzone-project">
+  <p>Product Gallery</p>
+  <form class="dropzone dropzone-light bg-light-primary">
+    <dropzone [config]="galleryConfig" [message]="gallery"
+      (error)="onUploadErrorGallery($event)" (success)="onUploadSuccessGallery($event)" [className]="'custom-drop-zone'">
+    </dropzone>
+  </form>
+</div>
+<div class="product-buttons">
+  <button class="btn me-2" (click)="previous()">
+    <div class="d-flex align-items-center gap-sm-2 gap-1">
+      <app-common-svg-icon [icon]="'back-arrow'"></app-common-svg-icon>
+      Previous
+    </div>
+  </button>
+  <button class="btn" (click)="next()">
+    <div class="d-flex align-items-center gap-sm-2 gap-1">Next
+      <app-common-svg-icon [icon]="'front-arrow'"></app-common-svg-icon>
+    </div>
+  </button>
+</div>

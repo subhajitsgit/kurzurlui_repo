@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-3 col-sm-6">
+      <app-common-chart [item]="totalSells" [chatData]="TotalSellsChart"></app-common-chart>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <app-common-chart [item]="dailyOrders" [chatData]="dailyOrdersChart"></app-common-chart>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <app-common-chart [item]="ordersValue" [chatData]="ordersValueChart"></app-common-chart>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <app-common-chart [item]="dailyRevenue" [chatData]="dailyRevenueChart"></app-common-chart>
+    </div>
+    <div class="col-xxl-3 col-xl-4 col-sm-6">
+      <app-website-design></app-website-design>
+    </div>
+    <div class="col-xxl-3 col-xl-4 col-sm-6 opening-chart">
+      <app-opening-of-leaflets></app-opening-of-leaflets>
+    </div>
+    <div class="col-xxl-6 col-xl-4 col-md-12">
+      <app-visitors></app-visitors>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <app-common-social-media [item]="FacebookChart"></app-common-social-media>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <app-common-social-media [item]="InstagramChart"></app-common-social-media>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <app-common-social-media [item]="TwitterChart"></app-common-social-media>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <app-common-social-media [item]="YoutubeChart"></app-common-social-media>
+    </div>
+    <div class="col-xl-6 col-md-12 proorder-md-1">
+      <app-common-education-data></app-common-education-data>
+    </div>
+    <div class="col-xxl-6 col-xl-6 box-col-6 proorder-xl-7 proorder-md-8 widgets-calendar">
+      <app-upcoming-appointments></app-upcoming-appointments>
+    </div>
+  </div>
+</div>

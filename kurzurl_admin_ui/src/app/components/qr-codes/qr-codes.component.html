@@ -1,0 +1,35 @@
+@for (qr of qrList; track qr.id) {
+<div class="link-card">
+  <div class="card-left">
+    <!-- QR Code -->
+      <div class="flex-shrink-0">
+        <img [src]="qr.qrImage"
+             alt="QR" class="w-20 h-20 img-fluid"
+             style="max-width: 150px;">
+      </div>
+  </div>
+
+  <div class="card-center">
+    <h3 class="title">{{qr.title}}</h3>
+    <p class="type">Website</p>
+    <a class="long-link" [href]="qr.mainUrl" target="_blank">
+      {{qr.mainUrl}}
+    </a>
+
+    <div class="meta">
+      <span>📊 Scan data</span>
+      <span>📅 Jul 7, 2025</span>
+      <span>🔗 bit.ly/4ksv8EF</span>
+    </div>
+  </div>
+
+  <div class="card-right">
+    <button class="icon-btn"><app-feather-icons [icons]="'more-vertical'"></app-feather-icons></button>
+    <button class="icon-btn"><app-feather-icons [icons]="'palette'"></app-feather-icons></button>
+    <button class="icon-btn"><app-feather-icons [icons]="'edit'"></app-feather-icons></button>
+    <button class="icon-btn"><app-feather-icons [icons]="'download'"></app-feather-icons></button>
+    <button class="view-btn">📈 View details</button>
+  </div>
+</div>
+}
+

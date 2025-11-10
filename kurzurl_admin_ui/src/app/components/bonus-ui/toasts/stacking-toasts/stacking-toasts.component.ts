@@ -1,0 +1,25 @@
+import { Component } from '@angular/core';
+import { stackingToastData } from '../../../../shared/data/data/toastr/toastr';
+import { FeatherIconsComponent } from '../../../../shared/components/feather-icons/feather-icons.component';
+
+@Component({
+  selector: 'app-stacking-toasts',
+  standalone: true,
+  imports:[FeatherIconsComponent],
+  templateUrl: './stacking-toasts.component.html',
+  styleUrls: ['./stacking-toasts.component.scss']
+})
+
+export class StackingToastsComponent {
+
+  public stackingToastData = stackingToastData;
+  public isShow : boolean = true;
+
+  close(id : number){
+    const close = stackingToastData.filter((data) => {
+      return data.id === id;
+    })    
+    close[0].show = false;      
+  }
+
+}

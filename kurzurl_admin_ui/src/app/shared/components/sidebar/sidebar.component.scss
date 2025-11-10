@@ -1,0 +1,130 @@
+.btn-create {
+       display: inline-block;
+       background-color: #28a745;
+       color: #fff;
+       text-decoration: none;
+       border-radius: 6px;
+       padding: 8px 78px;
+       font-size: 14px;
+       margin-left: 20px;
+       transition: all 0.3s ease;
+     }
+
+     .btn-create:hover {
+       background-color: #218838;
+     }
+
+     // Sidebar collapse behavior
+     .sidebar-wrapper {
+       transition: width 0.3s ease;
+
+       &.close_icon {
+         width: 60px !important;
+         min-width: 60px !important;
+         max-width: 60px !important;
+         overflow: hidden !important;
+
+         .sidebar-main {
+           width: 60px !important;
+
+           > div:has(.btn-create) {
+             width: 60px !important;
+             padding: 0 !important;
+             margin: 0 !important;
+             display: flex !important;
+             justify-content: center !important;
+           }
+
+           .btn-create {
+             min-width: 40px !important;
+             max-width: 40px !important;
+             width: 40px !important;
+             height: 40px !important;
+             padding: 0 !important;
+             margin: 10px 0 !important;
+             display: flex !important;
+             align-items: center !important;
+             justify-content: center !important;
+             border-radius: 50% !important;
+             font-size: 0 !important;
+             color: transparent !important;
+
+             &::before {
+               content: '+' !important;
+               font-size: 24px !important;
+               font-weight: bold !important;
+               color: #fff !important;
+               position: absolute !important;
+             }
+           }
+         }
+
+         .logo-wrapper {
+           display: none !important;
+         }
+
+         .logo-icon-wrapper {
+           display: block !important;
+         }
+
+         .sidebar-links li a span {
+           display: none !important;
+         }
+
+         .sidebar-main-title,
+         .pin-title {
+           display: none !important;
+         }
+
+         &:hover {
+           width: 255px !important;
+           max-width: 255px !important;
+           overflow: visible !important;
+           transition: all 0.3s ease;
+
+           .sidebar-main {
+             width: 255px !important;
+
+             > div:has(.btn-create) {
+               width: 100% !important;
+               justify-content: flex-start !important;
+               padding: 0 10px !important;
+             }
+
+             .btn-create {
+               width: auto !important;
+               min-width: auto !important;
+               max-width: none !important;
+               height: auto !important;
+               padding: 8px 78px !important;
+               margin-left: 20px !important;
+               display: inline-block !important;
+               border-radius: 6px !important;
+               font-size: 14px !important;
+               color: #fff !important;
+
+               &::before {
+                 display: none !important;
+               }
+             }
+           }
+
+           .logo-wrapper {
+             display: block !important;
+           }
+
+           .logo-icon-wrapper {
+             display: none !important;
+           }
+
+           .sidebar-links li a span {
+             display: inline !important;
+           }
+
+           .sidebar-main-title,
+           .pin-title {
+             display: block !important;
+           }
+         }
+       }
+     }
