@@ -69,6 +69,14 @@ export class NavService {
       active: true,
       path: "/qr-codes/qr-codes",
     },
+    {
+      level: 1,
+      title: 'Charts',
+      icon: 'charts',
+      type: 'link',
+      active: true,
+      path: "/charts/charts"
+    }
     // {
     //   headTitle1: "General",
     // },
