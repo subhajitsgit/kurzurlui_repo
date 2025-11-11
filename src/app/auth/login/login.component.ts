@@ -77,6 +77,7 @@ export class LoginComponent implements OnDestroy {
               token: response.token // Store token if provided
             };
             localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('jwt', response.token);
             this.router.navigate(['/dashboard/default']);
           },
           error: () => {
