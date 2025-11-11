@@ -116,17 +116,35 @@ export class RegisterComponent implements OnDestroy {
       if (event.origin !== 'http://localhost:5057') return; 
 
       const data = event.data;
+      
       if (data.success) {
-        console.log('Google registration successful!');
-        setTimeout(() => this.router.navigate(['/auth/login']), 1500);
-        this.showGoogleAlert = false;
+        if (data.token) {
+          console.log('Google authentication successful!');
+          const user = {
+            email: data.email,
+            name: data.name || 'user',
+            token: data.token
+          };
+          localStorage.setItem('jwt', data.token);
+          localStorage.setItem('user', JSON.stringify(user));
+          popup?.close();
+          window.removeEventListener('message', listener);
+          window.location.href = '/dashboard/default';
+          this.showGoogleAlert = false;
+        } else {
+          console.log('Google registration successful, but no token received');
+          popup?.close();
+          window.removeEventListener('message', listener);
+          setTimeout(() => this.router.navigate(['/auth/login']), 1500);
+          this.showGoogleAlert = false;
+        }
       } else {
         console.error('Google registration error:', data.message, data.errors);
         this.alertGoogleMessage = 'Google auth failed: ' + JSON.stringify(data.message);
         this.showGoogleAlert = true;
+        popup?.close();
+        window.removeEventListener('message', listener);
       }
-
-      window.removeEventListener('message', listener); // clean up
     };
 
     window.addEventListener('message', listener);
