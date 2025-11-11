@@ -303,7 +303,7 @@ export const content: Routes = [
             title: "Charts",
             breadcrumb: "Charts",
         },
-        loadChildren: () => import('../../components/charts/charts.routes'),
+        loadChildren: () => import('../../pages/charts/charts-page.routes'),
     }
 ]
 
