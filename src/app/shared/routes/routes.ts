@@ -297,6 +297,14 @@ export const content: Routes = [
         },
         loadChildren: () => import('../../components/qr-codes/qr-codes.routes'),
     },
+    {
+        path: 'charts',
+        data: {
+            title: "Charts",
+            breadcrumb: "Charts",
+        },
+        loadChildren: () => import('../../pages/charts/charts-page.routes'),
+    }
 ]
 
 
