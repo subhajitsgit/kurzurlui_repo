@@ -48,7 +48,7 @@ export class CreateNewComponent implements OnInit, OnDestroy {
     this.qrForm = this._formBuilder.group({
       mainUrl: [''],
       title: ['', [Validators.required]]
-    })
+    });
   }
 
   public ngOnInit(): void {

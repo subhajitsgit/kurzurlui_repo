@@ -225,7 +225,7 @@
                     class="form-control"
                     placeholder="Enter main URL"
                     formControlName="mainUrl">
-                  @if (linkForm.get('mainUrl')?.touched && linkForm.get('mainUrl')?.invalid) {
+                  @if (qrForm.get('mainUrl')?.touched && qrForm.get('mainUrl')?.invalid) {
                     <div class="text-danger">
                       Main URL is missing
                     </div>
@@ -239,7 +239,7 @@
                     class="form-control"
                     placeholder="Enter title"
                     formControlName="title">
-                  @if (linkForm.get('title')?.touched && linkForm.get('title')?.invalid) {
+                  @if (qrForm.get('title')?.touched && qrForm.get('title')?.invalid) {
                     <div class="text-danger">
                       Title is missing
                     </div>
