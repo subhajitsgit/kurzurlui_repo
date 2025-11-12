@@ -1,8 +1,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { GetQRResponseDto } from "@dto/qr/get-qr-list-response.dto";
-import { SaveQRRequestDto } from "@dto/qr/save-qr-request.dto";
-import { concatMap, map, mergeMap, Observable } from "rxjs";
+import { GetQRResponseDto, SaveQRRequestDto, UpdateQRRequestDto } from "@dto/qr";
+import { map, Observable } from "rxjs";
 
 interface GenerateQRResponse {
     qrBase64: string;
@@ -40,6 +39,13 @@ export class QrCodesService {
         return this.http.post(
             `${this._apiBaseUrl}/save`,
             saveQRRequest
+        );
+    }
+
+    public updateQR(updateQRRequest: UpdateQRRequestDto): Observable<any> {
+        return this.http.put(
+            `${this._apiBaseUrl}/update`,
+            updateQRRequest
         );
     }
 }

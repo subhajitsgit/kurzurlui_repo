@@ -28,6 +28,8 @@ export class CreateNewComponent implements OnInit, OnDestroy {
   public editLinkId: string | null;
   public editQrCodeId: string | null;
 
+  public readonly EDIT_MODE: typeof EditMode = EditMode;
+
   private _destroy$ = new Subject<void>();
   private _qrBase64: string;
 
