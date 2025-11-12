@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { GetQRListResponseDto } from "@dto/qr/get-qr-list-response.dto";
+import { GetQRResponseDto } from "@dto/qr/get-qr-list-response.dto";
 import { SaveQRRequestDto } from "@dto/qr/save-qr-request.dto";
 import { concatMap, map, mergeMap, Observable } from "rxjs";
 
@@ -25,8 +25,8 @@ export class QrCodesService {
         );
     }
 
-    public getQRList(): Observable<GetQRListResponseDto[]> {
-        return this.http.get<GetQRListResponseDto[]>(
+    public getQRList(): Observable<GetQRResponseDto[]> {
+        return this.http.get<GetQRResponseDto[]>(
             `${this._apiBaseUrl}/get`
         ).pipe(
             map(qrList => qrList.map(qrItem => {

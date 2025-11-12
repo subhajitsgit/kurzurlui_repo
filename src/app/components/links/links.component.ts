@@ -6,7 +6,7 @@ import { UserLinksService } from './links.service';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EditMode } from '@shared/enums';
+import { EditLinkQrParams, EditMode } from '@shared/enums';
 
 @Component({
   selector: 'app-links',
@@ -80,10 +80,10 @@ export class LinksComponent implements OnInit, OnDestroy {
   onEditLink(link: UserLink): void {
     this._router.navigate(['/project/create'], {
       queryParams: {
-        id: link.id,
-        editMode: EditMode.Link,
+        [EditLinkQrParams.Id]: link.id,
+        [EditLinkQrParams.EditMode]: EditMode.Link,
       },
-      state: { data: link },
+      state: { [EditLinkQrParams.Data]: link },
     });
   }
 }

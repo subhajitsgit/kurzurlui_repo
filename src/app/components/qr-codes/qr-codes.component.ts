@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FeatherIconsComponent } from '../../shared/components/feather-icons/feather-icons.component';
 import { QrCodesService } from './qr-codes.service';
 import { Subject, takeUntil } from 'rxjs';
-import { GetQRListResponseDto } from '@dto/qr/get-qr-list-response.dto';
+import { GetQRResponseDto } from '@dto/qr/get-qr-list-response.dto';
 
 @Component({
   selector: 'app-qr-codes',
@@ -13,7 +13,7 @@ import { GetQRListResponseDto } from '@dto/qr/get-qr-list-response.dto';
   providers: [QrCodesService]
 })
 export class QrCodesComponent implements OnInit, OnDestroy {
-  public qrList: GetQRListResponseDto[];
+  public qrList: GetQRResponseDto[];
   private _qrCodesService = inject(QrCodesService);
   private _destroy$ = new Subject<any>();
 
