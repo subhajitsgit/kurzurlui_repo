@@ -6,6 +6,7 @@ import { UserLinksService } from './links.service';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { EditMode } from '@shared/enums';
 
 @Component({
   selector: 'app-links',
@@ -80,9 +81,9 @@ export class LinksComponent implements OnInit, OnDestroy {
     this._router.navigate(['/project/create'], {
       queryParams: {
         id: link.id,
-        edit: 'true',
+        editMode: EditMode.Link,
       },
-      state: { linkData: link },
+      state: { data: link },
     });
   }
 }
