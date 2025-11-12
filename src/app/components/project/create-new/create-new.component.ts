@@ -1,20 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FileUploadComponent } from './file-upload/file-upload.component';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserLinksService } from '../../links/links.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { QrCodesService } from '../../qr-codes/qr-codes.service';
-// this is the create new
+import { UserLink } from '../../links/link.model';
+import { EditLinkQrParams, EditMode } from '@shared/enums';
+import { GetQRResponseDto } from '@dto/qr/get-qr-list-response.dto';
 @Component({
   selector: 'app-create-new',
   standalone: true,
-  imports: [FileUploadComponent, NgbNavModule, NgSelectModule, FormsModule, ReactiveFormsModule],
+  imports: [NgbNavModule, NgSelectModule, FormsModule, ReactiveFormsModule],
   templateUrl: './create-new.component.html',
   styleUrls: ['./create-new.component.scss'],
-  providers: [UserLinksService, QrCodesService]
+  providers: [UserLinksService, QrCodesService],
 })
 export class CreateNewComponent implements OnInit, OnDestroy {
   public active = 1;
@@ -23,6 +24,9 @@ export class CreateNewComponent implements OnInit, OnDestroy {
   public qrForm: FormGroup;
   public userId: number;
   public qrBase64ForImg: string | null;
+  public editMode: EditMode | null;
+  public editLinkId: string | null;
+  public editQrCodeId: string | null;
 
   private _destroy$ = new Subject<void>();
   private _qrBase64: string;
@@ -33,12 +37,16 @@ export class CreateNewComponent implements OnInit, OnDestroy {
     private userLinksService: UserLinksService,
     private _formBuilder: FormBuilder,
     private _router: Router,
-    private _qrCodesService: QrCodesService
+    private _qrCodesService: QrCodesService,
+    private _activatedRoute: ActivatedRoute
   ) {
     this.userId = 1;
     this.DOMAIN_DEFAULT_VALUE = '1';
     this.qrBase64ForImg = null;
     this._qrBase64 = '';
+    this.editMode = null;
+    this.editLinkId = null;
+    this.editQrCodeId = null;
 
     this.linkForm = this._formBuilder.group({
       mainUrl: ['', [Validators.required]],
@@ -47,12 +55,70 @@ export class CreateNewComponent implements OnInit, OnDestroy {
     });
     this.qrForm = this._formBuilder.group({
       mainUrl: [''],
-      title: ['', [Validators.required]]
+      title: ['', [Validators.required]],
     });
   }
 
   public ngOnInit(): void {
     this._observeQrForm();
+    this._checkEditMode();
+  }
+
+  private _checkEditMode(): void {
+    this._activatedRoute.queryParams.pipe(takeUntil(this._destroy$)).subscribe((params) => {
+      const navigation = this._router.getCurrentNavigation();
+      const data: UserLink | GetQRResponseDto | undefined = navigation?.extras?.state?.[EditLinkQrParams.Data] as
+        | UserLink
+        | GetQRResponseDto
+        | undefined;
+      const historyState: UserLink | GetQRResponseDto | undefined = history.state?.[EditLinkQrParams.Data] as
+        | UserLink
+        | GetQRResponseDto
+        | undefined;
+
+      switch (params[EditLinkQrParams.EditMode]) {
+        case EditMode.Link:
+          this.editMode = EditMode.Link;
+          this.editLinkId = params[EditLinkQrParams.Id];
+          this.active = 1;
+          this._loadLinkData(data as UserLink || historyState as UserLink);
+          break;
+        case EditMode.QrCode:
+          this.editMode = EditMode.QrCode;
+          this.editQrCodeId = params[EditLinkQrParams.Id];
+          this.active = 2;
+          this._loadQrCodeData(data as GetQRResponseDto || historyState as GetQRResponseDto);
+          break;
+        default:
+          this.editMode = null;
+          this.editLinkId = null;
+          this.editQrCodeId = null;
+          break;
+      }
+    });
+  }
+
+  private _loadLinkData(link: UserLink | undefined): void {
+    if (link) {
+      this.linkForm.patchValue({
+        mainUrl: link.mainUrl,
+        title: link.title,
+        domain: this.DOMAIN_DEFAULT_VALUE
+      });
+    } else {
+
+    }
+  }
+
+  private _loadQrCodeData(qrCode: GetQRResponseDto | undefined): void {
+    if (qrCode) {
+      this.qrForm.patchValue({
+        mainUrl: qrCode.mainUrl,
+        title: qrCode.title
+      });
+    } else {
+
+    }
   }
 
   public ngOnDestroy(): void {
@@ -75,22 +141,23 @@ export class CreateNewComponent implements OnInit, OnDestroy {
       return;
     }
     const formValues = this.linkForm.value;
-    this.userLinksService.createLink({
-      userId: 3,
-      mainUrl: formValues.mainUrl,
-      title: formValues.title
-    })
+    this.userLinksService
+      .createLink({
+        userId: 3,
+        mainUrl: formValues.mainUrl,
+        title: formValues.title,
+      })
       .subscribe(
-        resp => {
-          console.log({ resp })
+        (resp) => {
+          console.log({ resp });
 
           this.linkForm.reset({
-            domain: this.DOMAIN_DEFAULT_VALUE
+            domain: this.DOMAIN_DEFAULT_VALUE,
           });
 
           this._router.navigate(['/links/links']);
         },
-        error => {
+        (error) => {
           console.error(error);
           if (error?.error?.isPlanLimitReached) {
             this._redirectToPricingPage();
@@ -111,20 +178,21 @@ export class CreateNewComponent implements OnInit, OnDestroy {
     }
     if (!this.qrBase64ForImg) return;
     const qrFormValues = this.qrForm.value;
-    this._qrCodesService.saveQR({
-      qrBase64: this._qrBase64,
-      title: qrFormValues.title,
-      mainUrl: qrFormValues.mainUrl
-    })
+    this._qrCodesService
+      .saveQR({
+        qrBase64: this._qrBase64,
+        title: qrFormValues.title,
+        mainUrl: qrFormValues.mainUrl,
+      })
       .subscribe(
-        resp => {
+        (resp) => {
           console.log({ res: resp });
 
           this.qrForm.reset();
 
           this._router.navigate(['/qr-codes/qr-codes']);
         },
-        error => {
+        (error) => {
           console.error(error);
           if (error?.error?.isPlanLimitReached) {
             this._redirectToPricingPage();
@@ -138,18 +206,15 @@ export class CreateNewComponent implements OnInit, OnDestroy {
   }
 
   private _observeQrForm(): void {
-    this.qrForm.get('mainUrl')?.valueChanges
-      .pipe(
-        debounceTime(300),
-        takeUntil(this._destroy$)
-      )
-      .subscribe(mainUrl => {
+    this.qrForm
+      .get('mainUrl')
+      ?.valueChanges.pipe(debounceTime(300), takeUntil(this._destroy$))
+      .subscribe((mainUrl) => {
         if (mainUrl) {
-          this._qrCodesService.generateQR(mainUrl)
-            .subscribe(qrBase64 => {
-              this._qrBase64 = qrBase64;
-              this.qrBase64ForImg = `data:image/png;base64,${qrBase64}`;
-            });
+          this._qrCodesService.generateQR(mainUrl).subscribe((qrBase64) => {
+            this._qrBase64 = qrBase64;
+            this.qrBase64ForImg = `data:image/png;base64,${qrBase64}`;
+          });
         } else {
           this.qrBase64ForImg = null;
         }
