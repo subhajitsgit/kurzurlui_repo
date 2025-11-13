@@ -136,39 +136,20 @@ export class CreateNewComponent implements OnInit, OnDestroy {
     { id: 4, name: 'Hanry Die' },
     { id: 5, name: 'John Deo' },
   ];
-  onSaveLinkForm() {
+  public onSaveLinkForm() {
     if (this.linkForm.invalid) {
       this.linkForm.markAllAsTouched();
       console.warn('Invalid form');
       return;
     }
-    const formValues = this.linkForm.value;
-    this.userLinksService
-      .createLink({
-        userId: 3,
-        mainUrl: formValues.mainUrl,
-        title: formValues.title,
-      })
-      .subscribe(
-        (resp) => {
-          console.log({ resp });
-
-          this.linkForm.reset({
-            domain: this.DOMAIN_DEFAULT_VALUE,
-          });
-
-          this._router.navigate(['/links/links']);
-        },
-        (error) => {
-          console.error(error);
-          if (error?.error?.isPlanLimitReached) {
-            this._redirectToPricingPage();
-          }
-        }
-      );
+    if (this.editMode === EditMode.Link) {
+      this._updateLinkRegister();
+    } else {
+      this._createLinkRegister();
+    }
   }
 
-  onClearLinkForm() {
+  public onClearLinkForm(): void {
     this.linkForm.reset();
   }
 
@@ -179,28 +160,11 @@ export class CreateNewComponent implements OnInit, OnDestroy {
       return;
     }
     if (!this.qrBase64ForImg) return;
-    const qrFormValues = this.qrForm.value;
-    this._qrCodesService
-      .saveQR({
-        qrBase64: this._qrBase64,
-        title: qrFormValues.title,
-        mainUrl: qrFormValues.mainUrl,
-      })
-      .subscribe(
-        (resp) => {
-          console.log({ res: resp });
-
-          this.qrForm.reset();
-
-          this._router.navigate(['/qr-codes/qr-codes']);
-        },
-        (error) => {
-          console.error(error);
-          if (error?.error?.isPlanLimitReached) {
-            this._redirectToPricingPage();
-          }
-        }
-      );
+    if (this.editMode === EditMode.QrCode) {
+      this._updateQrCodeRegister();
+    } else {
+      this._createQrCodeRegister();
+    }
   }
 
   public onClearQRForm(): void {
@@ -225,5 +189,103 @@ export class CreateNewComponent implements OnInit, OnDestroy {
 
   private _redirectToPricingPage(): void {
     window.location.href = 'http://localhost:4201/#pricing';
+  }
+
+  private _createLinkRegister(): void {
+    const linkFormValues = this.linkForm.value;
+    this.userLinksService
+    .createLink({
+      userId: 3,
+      mainUrl: linkFormValues.mainUrl,
+      title: linkFormValues.title,
+    })
+    .subscribe(
+      (resp) => {
+        console.log({ resp });
+
+        this.linkForm.reset({
+          domain: this.DOMAIN_DEFAULT_VALUE,
+        });
+
+        this._router.navigate(['/links/links']);
+      },
+      (error) => {
+        console.error(error);
+        if (error?.error?.isPlanLimitReached) {
+          this._redirectToPricingPage();
+        }
+      }
+    );
+  }
+
+  private _updateLinkRegister(): void {
+    const linkFormValues = this.linkForm.value;
+    if (!this.editLinkId) return;
+      this.userLinksService.updateLink({
+        id: Number(this.editLinkId),
+        title: linkFormValues.title,
+        mainUrl: linkFormValues.mainUrl
+      })
+      .subscribe(
+        (resp) => {
+          console.log({ resp });
+
+          this.linkForm.reset();
+          this._router.navigate(['links/links']);
+        },
+        (error) => {
+          console.error(error);
+        }
+      )
+  }
+
+  private _createQrCodeRegister(): void {
+    const qrFormValues = this.qrForm.value;
+
+    this._qrCodesService
+    .saveQR({
+      qrBase64: this._qrBase64,
+      title: qrFormValues.title,
+      mainUrl: qrFormValues.mainUrl,
+    })
+    .subscribe(
+      (resp) => {
+        console.log({ res: resp });
+
+        this.qrForm.reset();
+
+        this._router.navigate(['/qr-codes/qr-codes']);
+      },
+      (error) => {
+        console.error(error);
+        if (error?.error?.isPlanLimitReached) {
+          this._redirectToPricingPage();
+        }
+      }
+    );
+  }
+
+  private _updateQrCodeRegister(): void {
+    const qrFormValues = this.qrForm.value;
+
+    if (!this.editQrCodeId) return;
+      this._qrCodesService.updateQR({
+        id: Number(this.editQrCodeId),
+        qrBase64: this._qrBase64,
+        title: qrFormValues.title,
+        mainUrl: qrFormValues.mainUrl,
+      })
+      .subscribe(
+        (resp) => {
+          console.log({ res: resp });
+
+          this.qrForm.reset();
+
+          this._router.navigate(['/qr-codes/qr-codes']);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
   }
 }
