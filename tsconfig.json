@@ -25,7 +25,7 @@
     ],
     "baseUrl": "src",
     "paths": {
-      "@shared/*": ["äpp/shared/*"],
+      "@shared/*": ["app/shared/*"],
       "@dto/*": ["app/shared/dto/*"],
       "@core/*": ["app/core/*"]
     }

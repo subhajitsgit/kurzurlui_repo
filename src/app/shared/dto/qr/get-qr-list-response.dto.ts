@@ -1,4 +1,4 @@
-export interface GetQRListResponseDto {
+export interface GetQRResponseDto {
     createdBy: string;
     createdOn: string;
     id: number;
