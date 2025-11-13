@@ -150,7 +150,10 @@ export class CreateNewComponent implements OnInit, OnDestroy {
   }
 
   public onClearLinkForm(): void {
-    this.linkForm.reset();
+    this.linkForm.reset({
+      domain: this.DOMAIN_DEFAULT_VALUE,
+    });
+    this._clearQueryParamsAndState();
   }
 
   public onSaveQRForm(): void {
@@ -169,6 +172,7 @@ export class CreateNewComponent implements OnInit, OnDestroy {
 
   public onClearQRForm(): void {
     this.qrForm.reset();
+    this._clearQueryParamsAndState();
   }
 
   private _observeQrForm(): void {
@@ -287,5 +291,16 @@ export class CreateNewComponent implements OnInit, OnDestroy {
           console.error(error);
         }
       );
+  }
+
+  private _clearQueryParamsAndState(): void {
+    this._router.navigate(['/project/create'], {
+      queryParams: {},
+      replaceUrl: true,
+    });
+    
+    this.editMode = null;
+    this.editLinkId = null;
+    this.editQrCodeId = null;
   }
 }
